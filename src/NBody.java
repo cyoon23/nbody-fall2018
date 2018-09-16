@@ -1,16 +1,16 @@
 	
 
 /**
- * @author YOUR NAME THE STUDENT IN 201
+ * @author christine yoon
  * 
  * Simulation program for the NBody assignment
  */
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.Scanner; 
 
-public class NBody {
+public class NBody { 
 	
 	/**
 	 * Read the specified file and return the radius
@@ -21,13 +21,18 @@ public class NBody {
 	public static double readRadius(String fname) throws FileNotFoundException  {
 		Scanner s = new Scanner(new File(fname));
 	
-		// TODO: read values at beginning of file to
-		// find the radius
+		// use scanner to read values at beginning of file to find the radius.
+		// The first scan for an int returns the number of bodies numBodies.
+		// The next scan for a double returns the value of the radius of the universe.
 		
-		s.close();
+		int numBodies = s.nextInt();
+		double radius = s.nextDouble();
 		
-		// TODO: return radius read
-		return 0;	
+		System.out.println(s.nextLine());
+		
+		s.close(); 
+		
+		return radius;	
 	}
 	
 	/**
@@ -40,22 +45,37 @@ public class NBody {
 	public static Body[] readBodies(String fname) throws FileNotFoundException {
 		
 			Scanner s = new Scanner(new File(fname));
+			int nb = s.nextInt(); // # bodies to be read
+			double radius = s.nextDouble();
 			
 			// TODO: read # bodies, create array, ignore radius
-			int nb = 0; // # bodies to be read
+
+			Body[] bodies = new Body[nb];
 			
 			for(int k=0; k < nb; k++) {
 				
-				// TODO: read data for each body
+				// read data for each body
 				// construct new body object and add to array
-			}
-			
+				
+				double x = s.nextDouble();
+				double y = s.nextDouble();
+				double xv = s.nextDouble();
+				double yv = s.nextDouble();
+				double mass = s.nextDouble();
+				String filename = s.next();
+				
+			Body bod = new Body(x, y, xv, yv, mass, filename); //creates object for place in for loop that contains info about position, velocity, mass, filename
+			bodies[k] = bod; //places object in bodies index--replaces the '0'
+				
+	}
 			s.close();
 			
-			// TODO: return array of body objects read
-			return null;
+			// return array of body objects read
+			return bodies;
 	}
+
 	public static void main(String[] args) throws FileNotFoundException{
+		//Body b = new Body(); 
 		double totalTime = 157788000.0;
 		double dt = 25000.0;
 		
@@ -77,15 +97,30 @@ public class NBody {
 			// TODO: create double arrays xforces and yforces
 			// to hold forces on each body
 			
+			double[] xForces = new double[bodies.length];
+			double[] yForces = new double[bodies.length];
+			
 			// TODO: loop over all bodies, calculate
 			// net forces and store in xforces and yforces
+			for (int i=0;i<bodies.length;i++) {
+				xForces[i]=bodies[i].calcNetForceExertedByX(bodies);
+				yForces[i]=bodies[i].calcNetForceExertedByY(bodies);
+			}
 			
 			// TODO: loop over all bodies and call update
 			// with dt and corresponding xforces, yforces values
 			
+			for (int i=0; i<bodies.length;i++) {
+				bodies[i].update(dt, xForces[i], yForces[i]);
+			}
+			
 			StdDraw.picture(0,0,"images/starfield.jpg");
 			
 			// TODO: loop over all bodies and call draw on each one
+			
+			for (int i=0;i<bodies.length;i++) {
+				bodies[i].draw();
+			}
 			
 			StdDraw.show(10);
 		}
