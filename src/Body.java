@@ -5,8 +5,7 @@ private double myYPos;
 private double myXVel;
 private double myYVel;
 private double myMass;
-private String myFileName;
-public double G = 6.67 * 1e-11; 
+private String myFileName; 
 
 /*Create a body from parameters xp (initial x position), yp (initial y position), xv (initial x velocity), yv (initial y velocity), etc. 
  * and equate instance variables to the parameters
@@ -80,6 +79,7 @@ public double calcDistance(Body b) {
 
 public double calcForceExertedBy(Body p) {
 	double r = calcDistance(p);
+	double G = 6.67 * 1e-11;
 	double F = G * myMass * p.myMass / (r*r);
 	return F;
 }
